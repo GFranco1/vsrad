@@ -34,7 +34,20 @@ class ProyectosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $proyecto = new \App\Proyecto();
+
+        $proyecto->nombre = $request->input('nombre');
+        $proyecto->configuracion = $request->input('configuracion');
+        $proyecto->validado = 0;
+
+        $proyecto->cliente_id = \Auth::user()->id;
+        $proyecto->tecnico_id = 0;
+        $proyecto->comercial_id = 0;
+
+        $proyecto->save();
+
+        return
     }
 
     /**

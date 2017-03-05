@@ -8,7 +8,9 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    <div class="alert alert-success" role="alert">Logeado {{ Auth::user()->nombre}} {{ Auth::user()->apellidos}}</div>
+
+                    <!--<a href="http://localhost:63342/VSRAD-Codigo/VSRAD/GeneradorPassword.php">generar</a>-->
                 </div>
             </div>
         </div>

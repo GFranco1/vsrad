@@ -18,4 +18,18 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+/*
+Route::get('/tusmuertos', function(){
+   echo "Tus muertos";
+});*/
+
+Route::resource('/peticion','PeticionesController');
+
+
+
+
+Route::get('/peticion', function(){
+    return view('auth.peticion');
+});
+
 

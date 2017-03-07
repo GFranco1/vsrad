@@ -9,8 +9,39 @@
 
                 <div class="panel-body">
                     <div class="alert alert-success" role="alert">Logeado {{ Auth::user()->nombre}} {{ Auth::user()->apellidos}}</div>
+                    <table class="table table-hover">
+                        @if( Auth::user()->rol == 4)
+                            @if(isset($peticiones))
+                                <thead>
+                                <th>Correo</th>
+                                <th>Contraseña</th>
+                                <th>Opciones</th>
+                                </thead>
+                                <tbody>
+                                @foreach($peticiones as $p)
+                                    <tr>
+                                        <td>{{$p->email}}</td>
+                                        <td>{{$p->password_temporal}}</td>
+                                        <td>
+                                            <form action="{{route('peticion.destroy', $p->id)}}" method="POST">
+                                                {!! csrf_field() !!}
+                                                {!! method_field('DELETE') !!}
+                                                <input type="submit" class="btn btn-success btn-s" value="Aceptar">
+                                            </form>
+                                            <form action="{{route('peticion.destroy', $p->id)}}" method="POST">
+                                                {!! csrf_field() !!}
+                                                {!! method_field('DELETE') !!}
+                                                <input type="submit" class="btn btn-danger btn-s" value="Denegar">
+                                            </form>
+                                        </td>
+                                        <!-- <td><a href="/borrar/{{$p->id}}">Eliminar</a></td>-->
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            @endif
+                        @endif
+                    </table>
 
-                    <!--<a href="http://localhost:63342/VSRAD-Codigo/VSRAD/GeneradorPassword.php">generar</a>-->
                 </div>
             </div>
         </div>

@@ -40,10 +40,9 @@
                             @endif
                         @endif
                     </table>
-
-
-
-
+                    @if( Auth::user()->rol == 0)
+                    @include('auth.register')
+                    @endif
                 </div>
             </div>
         </div>

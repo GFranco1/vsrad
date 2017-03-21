@@ -2,15 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Peticiones;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use Illuminate\Support\Facades\Redirect;
-
-use App\User;
-
-class PeticionesController extends Controller
+use \APP\User;
+class RegistroController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +13,7 @@ class PeticionesController extends Controller
      */
     public function index()
     {
-
+        //
     }
 
     /**
@@ -38,33 +32,19 @@ class PeticionesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
-        include 'GeneradorPassword.php';
-        $password_temporal = implode($password);
-        //dd($request->email);
-        $this->validate($request,[
-            'email' => 'required|unique:users',
-            //'password_temporal'=>'required',
-        ]);
-
-        $peticion = new Peticiones();
-        $peticion->email = $request->email;
-        $peticion->password_temporal = $password_temporal;
-        $peticion->rol = "4";
-
-        $peticion->save();
-
+        User::destroy($id);
         $user = new User();
+        $user->nombre = $request->nombre;
+        $user->apellidos = $request->apellidos;
+        $user->dni = $request->dni;
         $user->email = $request->email;
-        $user->password = bcrypt($password_temporal);
-        $user->rol = "0";
-
+        $user->password = bcrypt($request->password);
+        $user->telefono = $request->telefono;
+        $user->rol = "1";
         $user->save();
-
         return redirect('home');
-
-
     }
 
     /**
@@ -96,9 +76,9 @@ class PeticionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, array $data)
     {
-        //
+
     }
 
     /**
@@ -107,13 +87,10 @@ class PeticionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        Peticiones::destroy($id);
-
-
-        // redirect
-        //$request->session()->flash('alert-success', 'Pauta eliminada con exito');
-        return redirect('home');
+        //
     }
+
+
 }

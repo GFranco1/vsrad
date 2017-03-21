@@ -28,7 +28,7 @@ class User extends Authenticatable
     ];
 
     public static $roles = [
-        'cliente', 'comercial', 'tecnico', 'director_comercial', 'administrador'
+        'invitado','cliente', 'comercial', 'tecnico', 'director_comercial', 'administrador'
     ];
 
     public function hasRole($role)

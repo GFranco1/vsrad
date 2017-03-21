@@ -19,3 +19,28 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
+
+
+Route::resource('/peticion','PeticionesController');
+//Route::get('/registro',['as' => 'registro', 'uses' => 'Auth\RegisterController@register']);
+Route::post('/test-mail/{id}', ['as' => 'test-mail', 'uses' => 'HomeController@testMail']);
+//Route::get('/test-mail', 'HomeController@testMail');
+
+Route::group(['middleware' => 'role:cliente'], function () {
+//        Route::get('/', "ClienteController@index");
+    Route::get('/tusmuertos', function(){
+        echo "Tus muertos";
+    });
+    Route::get('/peticion', function(){
+        return view('auth.peticion');
+    });
+});
+
+/*
+Route::get('/peticion', function(){
+    return view('auth.peticion');
+});*/
+
+
+
+

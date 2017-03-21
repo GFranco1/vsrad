@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Peticiones;
 use Illuminate\Http\Request;
 
-class ProyectosController extends Controller
+use App\Http\Requests;
+use Illuminate\Support\Facades\Redirect;
+
+use App\User;
+
+class PeticionesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +19,7 @@ class ProyectosController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -34,20 +40,30 @@ class ProyectosController extends Controller
      */
     public function store(Request $request)
     {
+        include 'GeneradorPassword.php';
+        $password_temporal = implode($password);
+        //dd($request->email);
+        $this->validate($request,[
+            'email' => 'required|unique:users',
+            //'password_temporal'=>'required',
+        ]);
 
-        $proyecto = new \App\Proyecto();
+        $peticion = new Peticiones();
+        $peticion->email = $request->email;
+        $peticion->password_temporal = $password_temporal;
+        $peticion->rol = "4";
 
-        $proyecto->nombre = $request->input('nombre');
-        $proyecto->configuracion = $request->input('configuracion');
-        $proyecto->validado = 0;
+        $peticion->save();
 
-        $proyecto->cliente_id = \Auth::user()->id;
-        $proyecto->tecnico_id = 0;
-        $proyecto->comercial_id = 0;
+        $user = new User();
+        $user->email = $request->email;
+        $user->password = bcrypt($password_temporal);
 
-        $proyecto->save();
+        $user->save();
 
-        return
+        return redirect('home');
+
+
     }
 
     /**
@@ -90,8 +106,13 @@ class ProyectosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        Peticiones::destroy($id);
+
+
+        // redirect
+        //$request->session()->flash('alert-success', 'Pauta eliminada con exito');
+        return redirect('home');
     }
 }

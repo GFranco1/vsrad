@@ -31,10 +31,13 @@ for($i=0;$i<$longitud;$i++){
     //Insertamos en la ultima posición del array el bit devuelto por la función.
     array_push($password,$bit);
 }
+
+
+/*
 //Este foreach es para imprimir.
 foreach($password as $bit){
     echo "$bit";
-}
+}*/
 
 
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableCorreos extends Migration
+class CreatePeticionesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateTableCorreos extends Migration
      */
     public function up()
     {
-        Schema::create('correos', function (Blueprint $table) {
+        Schema::create('peticiones', function (Blueprint $table) {
             $table->increments('id');
             $table->string('email');
             $table->string('password_temporal');
             $table->integer('rol');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +29,6 @@ class CreateTableCorreos extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('peticiones');
     }
 }

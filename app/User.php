@@ -26,4 +26,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public static $roles = [
+        'invitado','cliente', 'comercial', 'tecnico', 'director_comercial', 'administrador'
+    ];
+
+    public function hasRole($role)
+    {
+        return User::$roles[$this->rol] == $role;
+    }
+
+    public function getRole() {
+        return User::$roles[$this->rol];
+    }
 }

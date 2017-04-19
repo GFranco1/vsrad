@@ -28,7 +28,7 @@ Route::resource('/registro','RegistroController');
 
 
 Route::group(['middleware' => 'role:cliente'], function () {
-
+          Route::get('/home',"ClienteController@index");
 //        Route::get('/', "ClienteController@index");
 });
 

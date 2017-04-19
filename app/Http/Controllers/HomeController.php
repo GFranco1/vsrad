@@ -8,6 +8,7 @@ use App\EmailChecker;
 use App\Mail\TempPass;
 use App\Peticiones;
 use Mail;
+use App\Componentes;
 class HomeController extends Controller
 {
     /**
@@ -27,7 +28,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         return view('home');
 
     }

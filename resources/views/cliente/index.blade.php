@@ -7,17 +7,26 @@
         <div class="col-sm-2 panel panel-default">
             <div class="panel-heading">Planos</div>
             <div class="panel-body">
-                <p><a href="#">Link</a></p>
-                <p><a href="#">Link</a></p>
-                <p><a href="#">Link</a></p>
+                @if(isset($planos))
+                    @foreach($planos as $p)
+                        <img src="{{$p->imagen_plano}}">
+                    @endforeach
+                @endif
             </div>
         </div>
 
-        <div class="col-sm-8 text-left">
+        <div class="col-sm-8  panel panel-default ">
             <div class="panel-heading">Componentes</div>
             <div class="panel-body">
-                <h1>Welcome</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                @if(isset($componentes))
+                    @foreach($componentes as $c)
+                        <img src="{{$c->imagen}}">
+                    @endforeach
+                @endif
+            </div>
+            <div class="panel-heading">Configuracion</div>
+            <div class="panel-body">
+                 <h1>PONER CANVAS</h1>
             </div>
         </div>
         <div class="col-sm-2 panel panel-default">

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Componentes;
+use App\Planos;
 class ClienteController extends Controller
 {
     /**
@@ -13,7 +14,9 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        //
+        $componentes = Componentes::all();
+        $planos = Planos::all();
+        return view('cliente.index')->with(['componentes'=>$componentes,'planos'=>$planos]);
     }
 
     /**
@@ -81,4 +84,5 @@ class ClienteController extends Controller
     {
         //
     }
+
 }

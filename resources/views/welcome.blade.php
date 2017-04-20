@@ -1,96 +1,85 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HTML Drag and Drop</title>
+    <meta name="description" content="Drag-and-drop HTML elements into a GoJS Diagram using jQuery." />
+    <!-- Copyright 1998-2017 by Northwoods Software Corporation. -->
+    <meta charset="UTF-8">
 
-        <title>Laravel</title>
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css" />
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/jquery-ui.min.js"></script>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <script src="../release/go.js"></script>
+    <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/peticion') }}">Peticion</a>
-                        <!--<a href="{{ url('/register') }}">Register</a>-->
-                    @endif
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
-    </body>
+    <script id="code">
+        function init() {
+            if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+            // Note that we do not use $ here as an alias for go.GraphObject.make because we are using $ for jQuery
+            var $$ = go.GraphObject.make;  // for conciseness in defining templates
+            myDiagram =
+                    $$(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
+                            { initialPosition: new go.Point(0, 0), "animationManager.isEnabled": false });
+            myDiagram.nodeTemplate =
+                    $$(go.Node, "Auto",
+                            { locationSpot: go.Spot.Center },
+                            new go.Binding("location", "loc", go.Point.parse),
+                            $$(go.Shape, "Ellipse",
+                                    { fill: "white" }),
+                            $$(go.TextBlock,
+                                    { margin: 5 },
+                                    new go.Binding("text", "text").makeTwoWay()));
+            $("li").draggable({
+                stack: "#myDiagramDiv",
+                revert: true,
+                revertDuration: 0
+            });
+            $("#myDiagramDiv").droppable({
+                activeClass: "ui-state-highlight",
+                drop: function(event, ui) {
+                    var elt = ui.draggable.first();
+                    var text = elt[0].textContent;
+                    var x = ui.offset.left - $(this).offset().left;
+                    var y = ui.offset.top - $(this).offset().top;
+                    var p = new go.Point(x, y);
+                    var q = myDiagram.transformViewToDoc(p);
+                    var model = myDiagram.model;
+                    model.startTransaction("drop");
+                    model.addNodeData({
+                        text: text,
+                        loc: go.Point.stringify(q)
+                    });
+                    model.commitTransaction("drop");
+                }
+            });
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="sample">
+    <div style="width:100%; white-space:nowrap;">
+    <span style="display: inline-block; vertical-align: top; width:20%">
+      <div id="myItems" style="border: solid 1px black; height: 700px">
+          <ul>
+              <li>First</li>
+              <li>Second</li>
+              <li>Third</li>
+              <li>Fourth</li>
+              <li>Fifth</li>
+          </ul>
+      </div>
+    </span>
+    <span style="display: inline-block; vertical-align: top; width:80%">
+      <div id="myDiagramDiv" style="border: solid 1px black; height: 700px"></div>
+    </span>
+    </div>
+    <div id ="description">
+        <p>
+            This demonstrates using jQuery drag-and-drop capability to allow the user to drag HTML list items into a GoJS diagram.
+        </p>
+    </div>
+</div>
+</body>
 </html>

@@ -1,3 +1,4 @@
+
 @if( Auth::user()->rol == 4)
     @include('director_comercial.index')
 @endif

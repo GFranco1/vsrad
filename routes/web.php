@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+Route::get('/',"ClienteController@index");
 
 Auth::routes();
 
@@ -43,6 +43,7 @@ Route::group(['middleware' => 'role:invitado'], function () {
 });
 
 Route::group(['middleware' => 'role:director_comercial'], function () {
+    Route::get('/home', 'HomeController@index');
     Route::post('/test-mail/{id}', ['as' => 'test-mail', 'uses' => 'HomeController@testMail']);
     Route::get('/peticiones', 'DirectorController@index');
     /*Route::get('/',function(){

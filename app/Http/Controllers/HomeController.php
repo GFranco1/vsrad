@@ -9,6 +9,7 @@ use App\Mail\TempPass;
 use App\Peticiones;
 use Mail;
 use App\Componentes;
+use App\Planos;
 class HomeController extends Controller
 {
     /**
@@ -42,6 +43,8 @@ class HomeController extends Controller
         //Peticiones::destroy($id); //Si ponemos esto eliminamos la peticion.
         return redirect('home');
     }
+
+
 
 
 }

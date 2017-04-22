@@ -12,7 +12,9 @@
 */
 
 
-
+Route::get('/w',function(){
+    return view('welcome');
+});
 Route::get('/',"ClienteController@index");
 
 Auth::routes();
@@ -26,10 +28,12 @@ Route::get('/peticion', function(){
 
 Route::resource('/registro','RegistroController');
 
+Route::resource('/proyecto','ProyectoController');
 
 Route::group(['middleware' => 'role:cliente'], function () {
           Route::get('/home',"ClienteController@index");
-//        Route::get('/', "ClienteController@index");
+          Route::get('/proyectos', 'ProyectoController@index');
+          Route::get('/modproyectos/{id}',['as' => 'modificar', 'uses' => 'ProyectoController@modificar']);
 });
 
 Route::group(['middleware' => 'role:invitado'], function () {

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Proyectos;
 use Illuminate\Http\Request;
-
+use \App\Planos;
+use \App\Componentes;
 class ProyectoController extends Controller
 {
     /**
@@ -13,7 +15,8 @@ class ProyectoController extends Controller
      */
     public function index()
     {
-        //
+        $proyectos = Proyectos::all();
+        return view('cliente.proyectos')->with(['proyectos'=>$proyectos]);
     }
 
     /**
@@ -34,7 +37,28 @@ class ProyectoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'nombre' => 'required|min:5',
+            'configuracion' => 'required'
+        ]);
+
+        $proyecto = new Proyectos();
+
+        $proyecto->nombre = $request->nombre;
+        $proyecto->configuracion = $request->configuracion;
+        $proyecto->estado = 0;
+        $proyecto->precio = 0;
+
+        $proyecto->id_cliente = \Auth::user()->id;
+        $proyecto->id_tecnico = 0;
+        $proyecto->id_comercial  = 0;
+        $proyecto->class_plano  = $request->plano;
+        $proyecto->class_casa  = $request->casa;
+        $proyecto->save();
+
+
+        //$request->session()->flash('alert-success', 'Proyecto creado con éxito.');
+        return redirect('home');
     }
 
     /**
@@ -77,8 +101,21 @@ class ProyectoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        Proyectos::destroy($id);
+
+
+        // redirect
+        //$request->session()->flash('alert-success', 'Pauta eliminada con exito');
+        return redirect('home');
+    }
+
+    public function modificar(Request $request, $id)
+    {
+        $proyecto = Proyectos::FindorFail($id);
+        $componentes = Componentes::all();
+        $planos = Planos::all();
+        return view('cliente.modproyectos')->with(['componentes'=>$componentes,'planos'=>$planos,'proyecto'=>$proyecto]);
     }
 }

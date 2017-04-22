@@ -11,11 +11,49 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+Route::get('/',"ClienteController@index");
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::resource('/peticion','PeticionesController');
+Route::get('/peticion', function(){
+    return view('auth.peticion');
+});
+
+Route::resource('/registro','RegistroController');
+
+
+Route::group(['middleware' => 'role:cliente'], function () {
+          Route::get('/home',"ClienteController@index");
+//        Route::get('/', "ClienteController@index");
+});
+
+Route::group(['middleware' => 'role:invitado'], function () {
+    Route::post('/registro/{id}', ['as' => 'registro', 'uses' => 'RegistroController@store']);
+    /*Route::get('/',function(){
+        return view('auth.register');
+    });
+    Route::get('/',function(){
+        echo "Hola mundo";
+    });*/
+});
+
+Route::group(['middleware' => 'role:director_comercial'], function () {
+    Route::get('/home', 'HomeController@index');
+    Route::post('/test-mail/{id}', ['as' => 'test-mail', 'uses' => 'HomeController@testMail']);
+    Route::get('/peticiones', 'DirectorController@index');
+    /*Route::get('/',function(){
+        return view('auth.register');
+    });*/
+});
+/*
+ Route::get('/',function(){
+        echo "Hola mundo";
+    });*/
+
+
 

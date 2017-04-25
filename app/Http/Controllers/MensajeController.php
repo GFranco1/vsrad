@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Mensajeria;
+
 
 class MensajeController extends Controller
 {
@@ -13,14 +16,14 @@ class MensajeController extends Controller
      */
     public function index()
     {
-        //
+        return view('mensajeria.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function mensajeatecnico(Request $request){
+        $users = User::all();
+        return view('mensajeria.clienteTecnico')->with(['users'=>$users]);
+    }
+
     public function create()
     {
         //
@@ -34,8 +37,17 @@ class MensajeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $mensaj = new Mensajeria();
+        $mensaj->asunto = $request->asunto;
+        $mensaj->mensaje = $request->mensaje;
+        $mensaj->origen = \Auth::user()->id;
+        $mensaj->destino = $request->get('destino');
+        $mensaj->leido = 0;
+        $mensaj->save();
+
+        return view('mensajeria.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -81,4 +93,56 @@ class MensajeController extends Controller
     {
         //
     }
+
+
+    /*
+    public function indiceComercial()
+    {
+        $users = User::all();
+        return view('mensajeria.clienteComercial')->with(['users'=>$users]);
+    }
+
+    public function indiceTecnico()
+    {
+        $users = User::all();
+        return view('mensajeria.clienteTecnico')->with(['users'=>$users]);
+    }
+
+    public function indiceCliente()
+    {
+        $users = User::all();
+        return view('mensajeria.mensajeACliente')->with(['users'=>$users]);
+    }*/
+
+    public function responder(Request $request, $id)
+    {
+        $mensaje = Mensajeria::FindorFail($id);
+        //$mensaje = Mensajeria::all();
+        // $users = User::all();
+        return view('mensajeria.responderMensaje')->with(['mensaje'=>$mensaje]);
+        /*
+        $mensaj = new Mensajeria();
+        $mensaj->asunto = $request->asunto;
+        $mensaj->mensaje = $request->mensaje;
+        $mensaj->origen = \Auth::user()->id;
+        $mensaj->destino = $request->get('destino');
+        $mensaj->save();*/
+
+        //return redirect('home');*/
+    }
+
+
+    /**
+    protected function validator(array $data)
+    {
+    return Validator::make($data, [
+    'asunto' => 'required|max:255',
+    'mensaje' => 'required|max:255',
+    ]);
+    }
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
 }

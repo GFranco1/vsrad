@@ -27,16 +27,17 @@ Route::get('/peticion', function(){
 });
 
 Route::resource('/registro','RegistroController');
-
+Route::resource('/mensajeria','MensajeController');
 Route::resource('/proyecto','ProyectoController');
 
 Route::group(['middleware' => 'role:cliente'], function () {
-          Route::get('/home',"ClienteController@index");
           Route::get('/proyectos', 'ProyectoController@index');
           Route::get('/modproyectos/{id}',['as' => 'modificar', 'uses' => 'ProyectoController@modificar']);
+          Route::get('/mensajeatecnico','MensajeController@mensajeatecnico');
 });
 
 Route::group(['middleware' => 'role:invitado'], function () {
+    //Route::get('/','RegistroController@index');
     Route::post('/registro/{id}', ['as' => 'registro', 'uses' => 'RegistroController@store']);
     /*Route::get('/',function(){
         return view('auth.register');
@@ -47,9 +48,9 @@ Route::group(['middleware' => 'role:invitado'], function () {
 });
 
 Route::group(['middleware' => 'role:director_comercial'], function () {
-    Route::get('/home', 'HomeController@index');
+    //Route::get('/home', 'DirectorController@index');
     Route::post('/test-mail/{id}', ['as' => 'test-mail', 'uses' => 'HomeController@testMail']);
-    Route::get('/peticiones', 'DirectorController@index');
+    Route::get('/peticiones', 'DirectorController@peticiones');
     /*Route::get('/',function(){
         return view('auth.register');
     });*/

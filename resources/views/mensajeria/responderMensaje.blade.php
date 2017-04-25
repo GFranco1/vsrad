@@ -9,7 +9,7 @@
 
                     <div class="panel-body">
                         <table class="table table-hover">
-                            @if(isset($proyectos))
+                          
                                 <thead>
                                 <th>Nombre</th>
                                 <th>Precio</th>
@@ -17,14 +17,13 @@
                                 <th>Opciones</th>
                                 </thead>
                                 <tbody>
-                                @foreach($proyectos as $p)
+                                @foreach($mensaje as $p)
                                     <tr>
-                                        <td>{{$p->nombre}}</td>
-                                        <td>{{$p->precio}}&euro;</td>
-                                        <td>{{$p->estado}}</td>
+                                        <td>{{$p->origen}}&euro;</td>
+                                        <td>{{$p->asunto}}</td>
                                         <td>
 
-                                            <form action="{{url(' ',$p->id)}}" method="POST">
+                                            <form action="{{url(' ',$p->id_tecnico)}}" method="POST">
                                                 {!! csrf_field() !!}
                                                 <input type="submit" class="btn btn-primary btn-s"
                                                        value="Validar Proyecto">
@@ -43,7 +42,7 @@
                                     </tr>
                                 @endforeach
                                 </tbody>
-                            @endif
+                          
                         </table>
                         <a href="{{url('/home')}}">
                             <button type="button" class="btn btn-primary btn-lg btn-block">Volver</button>

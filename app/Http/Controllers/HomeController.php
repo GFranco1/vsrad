@@ -29,8 +29,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
-
+        $componentes = Componentes::all();
+        $planos = Planos::all();
+        return view('home')->with(['componentes'=>$componentes,'planos'=>$planos]);
     }
 
     public function testMail(Request $request, $id)

@@ -18,7 +18,30 @@
             <div class="panel col-sm-8 panel-default ">
                 <div class="panel-heading text-center"><h3><b>Tipos de Componentes</b></h3></div>
                 <div class="panel-body">
-                    <div id="myPaletteDiv" style="border: solid 1px black; height: 100px"></div>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab1default" data-toggle="tab">Cocina</a></li>
+                        <li><a href="#tab2default" data-toggle="tab">Baño</a></li>
+                        <li><a href="#tab3default" data-toggle="tab">Habitacion</a></li>
+                        <li><a href="#tab4default" data-toggle="tab">Salon</a></li>
+                        <li><a href="#tab5default" data-toggle="tab">Terraza</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab1default">
+                            <div id="myPaletteDiv1" style="border: solid 1px black; height: 100px"></div>
+                        </div>
+                        <div class="tab-pane fade" id="tab2default">
+                            <div id="myPaletteDiv2" style="border: solid 1px black; height: 100px"></div>
+                        </div>
+                        <div class="tab-pane fade" id="tab3default">
+                            <div id="myPaletteDiv3" style="border: solid 1px black; height: 100px"></div>
+                        </div>
+                        <div class="tab-pane fade" id="tab4default">
+                            <div id="myPaletteDiv4" style="border: solid 1px black; height: 100px"></div>
+                        </div>
+                        <div class="tab-pane fade" id="tab5default">
+                            <div id="myPaletteDiv5" style="border: solid 1px black; height: 100px"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-heading text-center"><h3><b>Configuracion</b></h3></div>
                 <div class="panel-body text-center">
@@ -40,9 +63,7 @@
                         <div id="myDiagramDiv" class="canvas-plano-1 canvas-casa-1" ></div>
                         <br>
                         <div class="form-group">
-                            <label for="configuracion">Configuracion</label>
-                        <textarea id="mySavedModel" name="configuracion" class="form-control">{{ old('configuracion') }}
-                        </textarea>
+                            <textarea id="mySavedModel" name="configuracion"></textarea>
                         </div>
                         <input type="hidden" id="class-plano" value="canvas-plano-1" name="plano">
                         <input type="hidden" id="class-casa" value="canvas-casa-1" name="casa">
@@ -57,8 +78,8 @@
                         <button type="button" class="btn btn-primary btn-block">Mis Proyectos</button>
                     </a>
                     <br>
-                    <a href="{{url(' ')}}">
-                        <button type="button" class="btn btn-success btn-block">Mis Mensajes</button>
+                    <a href="{{route('mensajeria.index')}}">
+                        <button type="button" class="btn btn-success btn-block">Mensajeria</button>
                     </a>
                     <br>
                 </div>
@@ -112,17 +133,6 @@
                                 new go.Binding("text", "name"))
                 ));
 
-        myDiagram.groupTemplate =
-                $(go.Group, go.Panel.Auto,
-                        { isSubGraphExpanded: false,  // only show the Group itself, not any of its members
-                            ungroupable: true },  // allow the ExternalObjectsDropped event handler to ungroup
-                        // the members to be top-level parts, via a command
-                        $(go.Shape, "Rectangle",  // the rectangular shape around the members
-                                { fill: "rgba(128,128,128,0.2)", stroke: "gray", strokeWidth: 3 }),
-                        $(go.Placeholder, { alignment: go.Spot.TopLeft }),
-                        $(go.TextBlock,
-                                { font: "bold 16pt Helvetica, Arial, sans-serif", margin: 10 },
-                                new go.Binding("text", "text")));
         myDiagram.linkTemplate =
                 $(go.Link,
                         $(go.Shape, { strokeWidth: 1.5 }),
@@ -140,19 +150,21 @@
             var tb = myDiagram.selection.first().findObject('TEXT');
             if (tb) myDiagram.commandHandler.editTextBlock(tb);
         });
+
         // initialize the Palette that is on the left side of the page
-        myPalette =
-                $(go.Palette, "myPaletteDiv",  // must name or refer to the DIV HTML element
+        myPaletteDiv1 =
+                $(go.Palette, "myPaletteDiv1",  // must name or refer to the DIV HTML element
                         {
                             nodeTemplateMap: myDiagram.nodeTemplateMap,
-                            groupTemplateMap: myDiagram.groupTemplateMap
                         });
-        myPalette.model = new go.GraphLinksModel(  [ // note that each node data object holds whatever properties it needs;
+        myPaletteDiv1.model = new go.GraphLinksModel(  [ // note that each node data object holds whatever properties it needs;
             // for this app we add the "name" and "source" properties
                 @foreach($componentes as $c)
+
             {
                 name: "{{$c->nombre}}", source: "{{$c->imagen}}"
             },
+
             @endforeach
         ]);
 

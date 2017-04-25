@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Proyectos;
+
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Input;
 use \App\Planos;
 use \App\Componentes;
+use App\Proyectos;
+use Illuminate\Support\Facades\Storage;
+
 class ProyectoController extends Controller
 {
     /**
@@ -33,22 +38,31 @@ class ProyectoController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Responsed
      */
     public function store(Request $request)
     {
+
+        include 'GeneradorPassword.php';
+        $random_nombre = implode($password);
+
+        $file = $random_nombre.".json";
+        $url = "D:/Carlos/4_Ingenieria_Informatica/2_TRIMESTRE/INF-PGPI/StormEnginering/VSRAD-Codigo/VSRAD/public/json/";
+        $texto = $request->configuracion;
+        $fp = fopen($url.$file, "w");
+        fwrite($fp, $texto);
+        fclose($fp);
+
         $this->validate($request, [
             'nombre' => 'required|min:5',
             'configuracion' => 'required'
         ]);
 
         $proyecto = new Proyectos();
-
         $proyecto->nombre = $request->nombre;
-        $proyecto->configuracion = $request->configuracion;
+        $proyecto->configuracion = $file;
         $proyecto->estado = 0;
         $proyecto->precio = 0;
-
         $proyecto->id_cliente = \Auth::user()->id;
         $proyecto->id_tecnico = 0;
         $proyecto->id_comercial  = 0;

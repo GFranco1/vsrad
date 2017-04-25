@@ -1,222 +1,98 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ config('app.locale') }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section('content')
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <div class="container">
-        <div class="row content">
-            <div class="col-sm-2 panel panel-default">
-                <div class="panel-heading text-center"><h3><b>Planos</b></h3></div>
-                <div class="panel-body text-center">
-                    @if(isset($planos))
-                        @foreach($planos as $p)
-                            <h4><b>{{ $p->nombre }}</b></h4>
-                            <a class="{{$p->nombre_class}}"><img src="{{$p->icono_plano}}"/></a>
-                        @endforeach
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <!-- Scripts -->
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/go-debug.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+
+    <!-- Scripts -->
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+    </script>
+    <script>
+        function init() {
+            var $$ = go.GraphObject.make;  // for conciseness in defining templates, avoid $ due to jQuery
+            myDiagram = $$(go.Diagram, "myDiagramDiv", // create a Diagram for the DIV HTML element
+                    {
+                        initialContentAlignment: go.Spot.Center,  // center the content
+                        "undoManager.isEnabled": true  // enable undo & redo
+                    });
+            // define a simple Node template
+            myDiagram.nodeTemplate =
+                    $$(go.Node, "Auto",  // the Shape will go around the TextBlock
+                            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+                            $$(go.Picture,
+                                    // Pictures should normally have an explicit width and height.
+                                    // This picture has a red background, only visible when there is no source set
+                                    // or when the image is partially transparent.
+                                    {margin: 10, width: 50, height: 50, background: "red"},
+                                    // Picture.source is data bound to the "source" attribute of the model data
+                                    new go.Binding("source")),
+                            $$(go.TextBlock,
+                                    {margin: 12, stroke: "white", font: "bold 16px sans-serif"},
+                                    // TextBlock.text is bound to Node.data.key
+                                    new go.Binding("text", "name"))
+                    );
+            // but use the default Link template, by not setting Diagram.linkTemplate
+            // The previous initialization is the same as the minimal.html sample.
+            // Here we request JSON-format text data from the server, in this case from a static file.
+
+            jQuery.getJSON("../json/{{$proyecto->configuracion}}", load);
+        }
+        function load(jsondata) {
+            // create the model from the data in the JavaScript object parsed from JSON text
+            myDiagram.model = new go.GraphLinksModel(jsondata["nodeDataArray"]);
+
+        }
+    </script>
+
+</head>
+<body onload="init()">
+<div id="app">
+
+    <div class="panel-heading text-center"><h3><b>Configuracion</b></h3></div>
+    <div class="panel-body text-center">
+        <form class="form-horizontal" role="form" method="POST" action="{{ route('proyecto.store')}}">
+            {{ csrf_field() }}
+            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                <label for="nombre" class="col-md-4 control-label">Nombre Proyecto</label>
+
+                <div class="col-md-6">
+                    <input id="nombre" type="text" class="form-control" name="nombre"
+                           value="{{ old('nombre') }}" required>
+                    @if ($errors->has('nombre'))
+                        <span class="help-block">
+                                        <strong>{{ $errors->first('nombre') }}</strong>
+                                    </span>
                     @endif
                 </div>
             </div>
-            <div class="panel col-sm-8 panel-default ">
-                <div class="panel-heading text-center"><h3><b>Tipos de Componentes</b></h3></div>
-                <div class="panel-body">
-                    <div id="myPaletteDiv" style="border: solid 1px black; height: 100px"></div>
-                </div>
-                <div class="panel-heading text-center"><h3><b>Configuracion</b></h3></div>
-                <div class="panel-body text-center">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('proyecto.store')}}">
-                        {{ csrf_field() }}
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="nombre" class="col-md-4 control-label">Nombre Proyecto</label>
-
-                            <div class="col-md-6">
-                                <input id="nombre" type="text" class="form-control" name="nombre"
-                                       value="{{ old('nombre') }}" required>
-                                @if ($errors->has('nombre'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('nombre') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div id="myDiagramDiv" class="canvas-plano-1 canvas-casa-1" ></div>
-                        <br>
-                        <div class="form-group">
-                            <label for="configuracion">Configuracion</label>
+            <div id="myDiagramDiv" style="border: solid 1px black; width:1000px; height:1000px"></div>
+            <br>
+            <div class="form-group">
+                <label for="configuracion">Configuracion</label>
                         <textarea id="mySavedModel" name="configuracion" class="form-control">{{ old('configuracion') }}
                         </textarea>
-                        </div>
-                        <input type="hidden" id="class-plano" value="canvas-plano-1" name="plano">
-                        <input type="hidden" id="class-casa" value="canvas-casa-1" name="casa">
-                        <input type="submit" value="Guardar Proyecto" class="btn btn-success">
-                    </form>
-                </div>
             </div>
-
-            <div class="col-sm-2 panel panel-default">
-                <div class="panel-body">
-                    <a href="{{url('/proyectos')}}">
-                        <button type="button" class="btn btn-primary btn-block">Mis Proyectos</button>
-                    </a>
-                    <br>
-                    <a href="{{url(' ')}}">
-                        <button type="button" class="btn btn-success btn-block">Mis Mensajes</button>
-                    </a>
-                    <br>
-                </div>
-                <div class="panel-heading text-center"><h3><b>Cuenta</b></h3></div>
-                <div class="panel-body">
-                    <div class="well">
-                        <p>ADS</p>
-                    </div>
-                    <div class="well">
-                        <p>ADS</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <input type="hidden" id="class-plano" value="canvas-plano-1" name="plano">
+            <input type="hidden" id="class-casa" value="canvas-casa-1" name="casa">
+            <input type="submit" value="Guardar Proyecto" class="btn btn-success">
+        </form>
     </div>
-@endsection
-
-<script>
-
-    function init() {
-        var $ = go.GraphObject.make;  // for conciseness in defining templates
-        myDiagram =
-                $(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
-                        {
-                            allowDrop: true,   // must be true to accept drops from the Palette
-                            // automatically show the state of the diagram's model on the page in a <PRE> element
-                            "ModelChanged": function(e) {
-                                if (e.isTransactionFinished) {
-                                    document.getElementById("mySavedModel").textContent = myDiagram.model.toJson();
-                                }
-                            },
-                            "undoManager.isEnabled": true
-                        });
-        myDiagram.nodeTemplateMap.add("",  // the default category
-                $(go.Node, go.Panel.Auto,
-                        // the entire node will have a light-blue background
-                        {background: "#44CCFF"},
-                        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-                        $(go.Picture,
-                                // Pictures should normally have an explicit width and height.
-                                // This picture has a red background, only visible when there is no source set
-                                // or when the image is partially transparent.
-                                {margin: 10, width: 50, height: 50, background: "red"},
-                                // Picture.source is data bound to the "source" attribute of the model data
-                                new go.Binding("source")),
-                        $(go.TextBlock,
-                                "Default Text",  // the initial value for TextBlock.text
-                                // some room around the text, a larger font, and a white stroke:
-                                {margin: 12, stroke: "white", font: "bold 16px sans-serif"},
-                                // TextBlock.text is data bound to the "name" attribute of the model data
-                                new go.Binding("text", "name"))
-                ));
-
-        myDiagram.groupTemplate =
-                $(go.Group, go.Panel.Auto,
-                        { isSubGraphExpanded: false,  // only show the Group itself, not any of its members
-                            ungroupable: true },  // allow the ExternalObjectsDropped event handler to ungroup
-                        // the members to be top-level parts, via a command
-                        $(go.Shape, "Rectangle",  // the rectangular shape around the members
-                                { fill: "rgba(128,128,128,0.2)", stroke: "gray", strokeWidth: 3 }),
-                        $(go.Placeholder, { alignment: go.Spot.TopLeft }),
-                        $(go.TextBlock,
-                                { font: "bold 16pt Helvetica, Arial, sans-serif", margin: 10 },
-                                new go.Binding("text", "text")));
-        myDiagram.linkTemplate =
-                $(go.Link,
-                        $(go.Shape, { strokeWidth: 1.5 }),
-                        $(go.Shape, { toArrow: "Standard", stroke: null }));
-        // this DiagramEvent is raised when the user has drag-and-dropped something
-        // from another Diagram (a Palette in this case) into this Diagram
-        myDiagram.addDiagramListener("ExternalObjectsDropped", function(e) {
-            // stop any ongoing text editing
-            if (myDiagram.currentTool instanceof go.TextEditingTool) {
-                myDiagram.currentTool.acceptText(go.TextEditingTool.LostFocus);
-            }
-            // expand any "macros"
-            myDiagram.commandHandler.ungroupSelection();
-            // start editing the first node that was dropped after ungrouping
-            var tb = myDiagram.selection.first().findObject('TEXT');
-            if (tb) myDiagram.commandHandler.editTextBlock(tb);
-        });
-        // initialize the Palette that is on the left side of the page
-        myPalette =
-                $(go.Palette, "myPaletteDiv",  // must name or refer to the DIV HTML element
-                        {
-                            nodeTemplateMap: myDiagram.nodeTemplateMap,
-                            groupTemplateMap: myDiagram.groupTemplateMap
-                        });
-        myPalette.model = new go.GraphLinksModel(  [ // note that each node data object holds whatever properties it needs;
-            // for this app we add the "name" and "source" properties
-                @foreach($componentes as $c)
-            {
-                name: "{{$c->nombre}}", source: "{{$c->imagen}}"
-            },
-            @endforeach
-        ]);
-
-
-        var casa_actual = 1;
-        var casa_plano = 1;
-        jQuery(".casa1").click(function () {
-            jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
-            jQuery("#myDiagramDiv").removeClass("canvas-plano-" + casa_plano);
-            jQuery("#myDiagramDiv").addClass("canvas-casa-1");
-            jQuery("#myDiagramDiv").addClass("canvas-plano-1");
-            document.getElementById("class-plano").value = "canvas-plano-1";
-            document.getElementById("class-casa").value = "canvas-casa-1";
-            casa_actual = 1;
-            casa_plano = 1;
-        });
-
-        jQuery(".casa2").click(function () {
-            jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
-            jQuery("#myDiagramDiv").removeClass("canvas-plano-" + casa_plano);
-            jQuery("#myDiagramDiv").addClass("canvas-casa-2");
-            jQuery("#myDiagramDiv").addClass("canvas-plano-2");
-            document.getElementById("class-plano").value = "canvas-plano-2";
-            document.getElementById("class-casa").value = "canvas-casa-2";
-            casa_actual = 2;
-            casa_plano = 2;
-        });
-
-        jQuery(".casa3").click(function () {
-            jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
-            jQuery("#myDiagramDiv").removeClass("canvas-plano-" + casa_plano);
-            jQuery("#myDiagramDiv").addClass("canvas-casa-3");
-            jQuery("#myDiagramDiv").addClass("canvas-plano-3");
-            document.getElementById("class-plano").value = "canvas-plano-3";
-            document.getElementById("class-casa").value = "canvas-casa-3";
-            casa_actual = 3;
-            casa_plano = 3;
-        });
-
-        jQuery(".casa4").click(function () {
-            jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
-            jQuery("#myDiagramDiv").removeClass("canvas-plano-" + casa_plano);
-            jQuery("#myDiagramDiv").addClass("canvas-casa-4");
-            jQuery("#myDiagramDiv").addClass("canvas-plano-4");
-            document.getElementById("class-plano").value = "canvas-plano-4";
-            document.getElementById("class-casa").value = "canvas-casa-4";
-            casa_actual = 4;
-            casa_plano = 4;
-        });
-
-        jQuery(".casa5").click(function () {
-            jQuery("#myDiagramDiv").removeClass("canvas-casa-" + casa_actual);
-            jQuery("#myDiagramDiv").removeClass("canvas-plano-" + casa_plano);
-            jQuery("#myDiagramDiv").addClass("canvas-casa-5");
-            jQuery("#myDiagramDiv").addClass("canvas-plano-5");
-            document.getElementById("class-plano").value = "canvas-plano-5";
-            document.getElementById("class-casa").value = "canvas-casa-5";
-            casa_actual = 5;
-            casa_plano = 5;
-        });
-
-
-    }
-
-
-</script>
-
+</body>
+</html>

@@ -19,8 +19,7 @@ class DirectorController extends Controller
 
     public function index()
     {
-        $peticiones = Peticiones::all();
-        return view('director_comercial.peticiones')->with(['peticiones'=>$peticiones]);
+        return view('director_comercial.index');
     }
 
     /**
@@ -87,5 +86,9 @@ class DirectorController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function peticiones(){
+        $peticiones = Peticiones::all();
+        return view('director_comercial.peticiones')->with(['peticiones'=>$peticiones]);
     }
 }

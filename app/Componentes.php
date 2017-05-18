@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Componentes extends Model
 {
     protected $fillable = [
-        'nombre','descripcion','precio','zona','imagen',
+        'nombre','descripcion','precio','zona','imagen', 'validado'
     ];
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Planos extends Model
 {
     protected $fillable = [
-        'nombre','imagen_plano','icono_plano'
+        'nombre', 'nombre_class', 'imagen_plano','icono_plano', 'validado'
     ];
 }
+

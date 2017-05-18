@@ -1,0 +1,10 @@
+{ "class": "go.GraphLinksModel",
+  "nodeDataArray": [ 
+{"name":"sensor", "source":"http://ximg.es/50X50/00FF00/fff&amp;text=sensor", "precio":"1", "key":-3, "loc":"512.6000061035156 32.199981689453125"},
+{"name":"sensor", "source":"http://ximg.es/50x50/ff00ff/fff&amp;text=sensor", "precio":"1", "key":-4, "loc":"334.6000061035156 83.19998168945312"},
+{"name":"sensor", "source":"http://ximg.es/50x50/000080/fff&amp;text=sensor", "precio":"1.1", "key":-5, "loc":"590.6000061035156 318.1999816894531"},
+{"name":"sensor", "source":"http://ximg.es/50x50/ff00ff/fff&amp;text=sensor", "precio":"1", "key":-6, "loc":"446.6000061035156 330.1999816894531"},
+{"name":"sensor", "source":"http://ximg.es/50X50/00FF00/fff&amp;text=sensor", "precio":"1", "key":-7, "loc":"263.6000061035156 308.1999816894531"},
+{"name":"sensor", "source":"http://ximg.es/50X50/FF0000/fff&amp;text=sensor", "precio":"1", "key":-2, "loc":"58.600006103515625 332.1999816894531"}
+ ],
+  "linkDataArray": []}

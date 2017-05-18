@@ -1,0 +1,3 @@
+{ "class": "go.GraphLinksModel",
+  "nodeDataArray": [ {"name":"sensor", "source":"http://ximg.es/50x50/000/fff.jpg&amp;text=sensor+", "precio":"5.5", "key":-1, "loc":"296.6000061035156 107.19998168945312"} ],
+  "linkDataArray": []}

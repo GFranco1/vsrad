@@ -12,10 +12,7 @@
                         <a href="{{route('enviadostecnico')}}"><button type="button" class="btn btn-primary btn-lg btn-block">Enviados</button></a>
                     </div>
                     <div class="panel-body">
-                        <a href="{{url(' ')}}"><button type="button" class="btn btn-primary btn-lg btn-block">Proyectos asignados</button></a>
-                    </div>
-                    <div class="panel-body">
-                        <a href="{{url(' ')}}"><button type="button" class="btn btn-primary btn-lg btn-block">Nuevo mensaje</button></a>
+                        <a href="{{url('proyectos',Auth::user()->id)}}"><button type="button" class="btn btn-primary btn-lg btn-block">Proyectos asignados</button></a>
                     </div>
                 </div>
             </div>

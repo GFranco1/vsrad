@@ -34,18 +34,29 @@ class RegistroController extends Controller
      */
     public function store(Request $request,$id)
     {
+
+        $this->validate($request, [
+            'nombre' => 'required|max:15',
+            'apellidos' => 'required|max:15',
+            'dni' => 'required|min:9|max:9',
+            'telefono' => 'required|min:9|max:9',
+            'contraseña' => 'required|min:6',
+
+        ]);
+        
         User::destroy($id);
         $user = new User();
         $user->nombre = $request->nombre;
         $user->apellidos = $request->apellidos;
         $user->dni = $request->dni;
         $user->email = $request->email;
-        $user->password = bcrypt($request->password);
+        $user->contraseña = bcrypt($request->contraseña);
         $user->telefono = $request->telefono;
         $user->rol = "1";
         $user->save();
         return redirect('home');
     }
+
 
     /**
      * Display the specified resource.

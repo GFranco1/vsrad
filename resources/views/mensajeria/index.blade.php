@@ -6,16 +6,19 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Opciones</div>
                     <div class="panel-body">
-                        <a href="{{url('/mensajeatecnico')}}"><button type="button" class="btn btn-primary btn-lg btn-block">Enviar Mensaje a Tecnico</button></a>
+                        <a href="{{url('proyectosmensajecliente',Auth::user()->id)}}"><button type="button" class="btn btn-primary btn-lg btn-block">Enviar mensaje a Tecnico</button></a>
                     </div>
                     <div class="panel-body">
-                        <a href="{{url(' ')}}"><button type="button" class="btn btn-primary btn-lg btn-block">Enviar Mensaje a Comercial</button></a>
+                        <a href="{{url('enviarmensajeacomercial',Auth::user()->id)}}"><button type="button" class="btn btn-primary btn-lg btn-block">Enviar mensaje a Comercial</button></a>
                     </div>
                     <div class="panel-body">
-                        <a href="{{url(' ')}}"><button type="button" class="btn btn-primary btn-lg btn-block">Recibidos</button></a>
+                        <a href="{{route('recibidoscliente')}}"><button type="button" class="btn btn-primary btn-lg btn-block">Recibidos</button></a>
                     </div>
                     <div class="panel-body">
-                        <a href="{{url(' ')}}"><button type="button" class="btn btn-primary btn-lg btn-block">Enviados</button></a>
+                        <a href="{{route('enviadoscliente')}}"><button type="button" class="btn btn-primary btn-lg btn-block">Enviados</button></a>
+                    </div>
+                    <div class="panel-body">
+                        <a href="{{url('/home')}}"><button type="button" class="btn btn-warning btn-lg btn-block">Volver</button></a>
                     </div>
                 </div>
             </div>

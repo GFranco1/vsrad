@@ -1,0 +1,6 @@
+{ "class": "go.GraphLinksModel",
+  "nodeDataArray": [ 
+{"name":"sensor", "source":"http://i67.tinypic.com/2u55dvl.jpg", "precio":"1", "key":-4, "loc":"240.39999389648438 231.19998168945312"},
+{"name":"sensor", "source":"http://i66.tinypic.com/v44epf.jpg", "precio":"1.1", "key":-5, "loc":"578.3999938964844 10.199981689453125"}
+ ],
+  "linkDataArray": []}

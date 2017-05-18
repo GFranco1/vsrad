@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Componentes;
 
 class ComponenteController extends Controller
 {
@@ -34,7 +35,19 @@ class ComponenteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $componente = new Componentes();
+        $componente->nombre = $request->nombre;
+        $componente->descripcion = $request->descripcion;
+        $componente->precio = $request->precio;
+        $componente->imagen = $request->imagen;
+        $componente->validado = "0";
+        $componente->save();
+        return redirect('home');
+    }
+
+    public function componenteForm(Request $request)
+    {
+        return view('administrador.altaComponente');
     }
 
     /**
@@ -68,7 +81,11 @@ class ComponenteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $componente = Componentes::FindorFail($id);
+        $componente->validado='1';
+        $componente->save();
+        
+        return redirect('home');
     }
 
     /**
@@ -77,8 +94,16 @@ class ComponenteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+    public function listar(Request $request)
     {
-        //
+       $componentes = Componentes::all();
+       return view('director_comercial.mostrarComponentes')->with(['componentes'=>$componentes]);
+    }
+
+   public function destroy(Request $request, $id)
+    {
+        Componentes::destroy($id);
+        return redirect('home');
     }
 }

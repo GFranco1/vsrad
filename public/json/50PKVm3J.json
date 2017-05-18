@@ -1,0 +1,16 @@
+{ "class": "go.GraphLinksModel",
+  "nodeDataArray": [ 
+{"name":"sensor", "source":"http://ximg.es/50x50/000/fff.jpg&amp;text=sensor+", "precio":"5.5", "key":-1, "loc":"110.5 118"},
+{"name":"sensor", "source":"http://ximg.es/50x50/000/fff.jpg&amp;text=sensor+", "precio":"5.5", "key":-2, "loc":"235.5 124"},
+{"name":"sensor", "source":"http://ximg.es/50X50/FF0000/fff&amp;text=sensor", "precio":"1", "key":-3, "loc":"333.5 144"},
+{"name":"sensor", "source":"http://ximg.es/50X50/00FF00/fff&amp;text=sensor", "precio":"1", "key":-4, "loc":"440.5 126"},
+{"name":"sensor", "source":"http://ximg.es/50x50/ff00ff/fff&amp;text=sensor", "precio":"1", "key":-5, "loc":"520.5 122"},
+{"name":"sensor", "source":"http://ximg.es/50x50/000080/fff&amp;text=sensor", "precio":"1.1", "key":-6, "loc":"164.5 368"},
+{"name":"sensor", "source":"http://ximg.es/50X50/00FF00/fff&amp;text=sensor", "precio":"1", "key":-7, "loc":"273.5 282"},
+{"name":"sensor", "source":"http://ximg.es/50x50/ff00ff/fff&amp;text=sensor", "precio":"1", "key":-8, "loc":"425.5 276"},
+{"name":"sensor", "source":"http://ximg.es/50x50/000080/fff&amp;text=sensor", "precio":"1.1", "key":-9, "loc":"578.5 338"},
+{"name":"sensor", "source":"http://ximg.es/50X50/00FF00/fff&amp;text=sensor", "precio":"1", "key":-10, "loc":"137.5 294"},
+{"name":"sensor", "source":"http://ximg.es/50X50/FF0000/fff&amp;text=sensor", "precio":"1", "key":-11, "loc":"323.5 375"},
+{"name":"sensor", "source":"http://ximg.es/50x50/000/fff.jpg&amp;text=sensor+", "precio":"5.5", "key":-12, "loc":"421.5 359"}
+ ],
+  "linkDataArray": []}
